@@ -9,7 +9,7 @@ services:
     command: mysqld
 
   elasticsearch:
-    image: elasticsearch
+    image: elasticsearch:6.6.1
     depends_on:
       - mysql
 
