@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once("php/sqlConnect.php");
-$id_to_get = 1;
+$id_to_get = $_SESSION['user_ID'];
 if(isset($_GET['id'])){
 	$id_to_get = $_GET['id'];
 }
@@ -36,7 +36,7 @@ $token = $_SESSION['token'];
 				<div class="container-fluid" id="inputArea">
 					<h2 id="settingsHeader">Settings</h2>
 					<div id="field">
-						<form action="settings.php" method="post" enctype="multipart/form-data">
+						<form action="php/settings.php" method="post" enctype="multipart/form-data">
 							<p>Display Name:</p>
 							<input type="text" id="displayName" placeholder="Enter Display Name" name="displayName">
 							<p>Email:</p>
@@ -53,7 +53,7 @@ $token = $_SESSION['token'];
 			<div class="container-fluid" id="userBanner">
 				<div id="skitterData">
 					<button id="getSettings" type="button">Settings</button>
-					<a href="/?id=1"><button id="goHome" type="button" >Home</button></a>
+					<a href="/home.php?id=<?=$_SESSION['user_ID']?>"><button id="goHome" type="button" >Home</button></a>
 				</div>
 				<div id="userData">
 					<div id="usernamediv">
@@ -87,22 +87,24 @@ $token = $_SESSION['token'];
 
 					$stmt->bind_result($friends);
 					$stmt->fetch();
-					if(isset($userid)){
-						die("Error setting username: username already being used<br>");
-					}
-
 					$stmt->close();
 
+					if(strlen($friends) > 0){
 					$url = "http://serversetup_node_1:61234/getSkits?ids=";
+
+					if($friends[0] == ','){
+						$friends = substr($friends, 1);
+					}
 					$url = $url . $friends;
 					$skitData = file_get_contents($url);
 					$i = 0;
+
 					$skits = preg_split("/((\r?\n)|(\r\n?))/", $skitData);
-					while($i < 4){
+					while($i < 5){
 						$line = $skits[$i];
 						if(strlen($line) == 0)
 							break;
-						$line_arr = explode(",", $line);
+						$line_arr = json_decode($line);
 						$skitOwner = $line_arr[0];
 
 						$skitUsername = "";
@@ -127,22 +129,17 @@ $token = $_SESSION['token'];
 							<p id="postContent">
 								<?=$line_arr[1]?>
 							</p>
-							<div id="postData">
-								<div id="likes">
-									<p id="count"><?=$line_arr[2]?></p>
-									<button type="button" id="likeButton"><img id="dataImg" src="img/like.svg" /></button>
-								</div>
-								<div id="comments">
-									<p id="count">1</p>
-									<button type="button" id="commentButton"><img id="dataImg" src="img/chat.svg" /></button>
-								</div>
-							</div>
 						</div>
 					</div>
 				<?php
 						$i = $i + 1;
 					}
+				} else {
+					echo "Sorry no friends";
+				}
 				?>
+
+
 				<div id="seeMoreButton">
 					<a href="listFriends.php"><button type="button" id="viewMoreButton">Friends</button></a>
 				</div>
@@ -183,7 +180,7 @@ $token = $_SESSION['token'];
 							$stmt->fetch();
 
 							if($username !== NULL){
-								echo "<a href=\"/?id=$friendNum\"><div id=\"friend\" class=\"container-fluid\">
+								echo "<a href=\"/home.php?id=$friendNum\"><div id=\"friend\" class=\"container-fluid\">
 								<img id=\"friendPic\" src=\"$profile_pic\" />
 								<div id=\"nameAndAdd\">
 								<p id=\"friendUsername\"><strong>$username</strong></p>

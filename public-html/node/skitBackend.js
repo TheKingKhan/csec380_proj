@@ -213,7 +213,16 @@ app.get('/getSkits', function (req, res){
 	}).then(function(resp){
 		if(resp.hits.total > 0){
 			resp.hits.hits.forEach(function(hit){
-				res.write(hit._source.ownerID + "," + hit._source.content + "," + hit._source.skitID + "," + hit._source.replyTo + "|" + hit._source.replies + "\n");
+				var returnArray = {hit._source.ownerID, };
+				returnArray.push(hit._source.ownerID);
+				returnArray.push(hit._source.content);
+				returnArray.push(hit._source.skitID);
+				returnArray.push(hit._source.replyTo);
+				returnArray.push(hit._source.replies);
+				var jsonData = JSON.stringify(returnArray);
+				jsonData = jsonData + "\n";
+				console.log(jsonData);
+				res.write(jsonData);
 			});
 		} else {
 			console.log("No skits");
@@ -257,7 +266,13 @@ app.get('/getReply', function (req, res){
 
 			//If we have a hit, and it should only be one then we will return data about that skit for PHP
 			resp.hits.hits.forEach(function(hit){
-				res.write(hit._source.ownerID + "," + hit._source.content + "," + hit._source.skitID + "\n");
+				var returnArray = [];
+				returnArray.push(hit._source.ownerID);
+				returnArray.push(hit._source.content);
+				returnArray.push(hit._source.skitID);
+				var jsonData = JSON.stringify(returnArray);
+				jsonData = jsonData + "\n";
+				res.write(jsonData);
 			});
 		} else {
 			console.log("No skits");

@@ -319,16 +319,19 @@ form p{
 	margin-top: 45px;
 	border-radius: 2px;
 	text-align: center;
+	margin-bottom: 25px;
 }
 
 #friendPic{
-	display: inline-block;
+	display: inline;
 	height: 75px;
 	width: 75px;
 	border-radius: 50%;
 	margin-right: 20px;
 	vertical-align: inherit;
 	transform: translateY(10%);
+	position: relative;
+	z-index: -20;
 }
 
 #friend p{
@@ -337,7 +340,7 @@ form p{
 
 a{
 	text-decoration: none;
-	color: black; 
+	color: black;
 }
 
 a:hover{

@@ -16,7 +16,8 @@
 
 	//POST to the Node API
 	$context = stream_context_create($options);
-	$result = file_get_contents("http://serversetup_auth_1:8080/Skitter/Register", false, $context);
+	$ip = gethostbyname("serversetup_auth_1.serversetup_default");
+	$result = file_get_contents("http://". $ip .":8080/Skitter/Register", false, $context);
 
 	//Check if it failed to create Skit
 	if(strcmp($result, "Error creating Skit.") == 0){

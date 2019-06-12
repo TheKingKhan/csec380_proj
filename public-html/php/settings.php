@@ -1,5 +1,6 @@
 <?php
 	//Connect to database and get some basic information from the uploaded details
+	//Also authenticates user
 	session_start();
 	include_once("sqlConnect.php");
 	$userid = NULL;
@@ -61,6 +62,22 @@
 
 	//File has passed initial inspection and is ready to be uploaded
 	if(isset($file)){
+		$stmt = $conn->prepare("SELECT profile_pic FROM Users WHERE userid = ?;");
+		$stmt->bind_param("i", $_SESSION['user_ID']);
+
+		if(!$stmt->execute()){
+			print "Error in executing command";
+		}
+
+		$stmt->bind_result($profile_pic);
+		$stmt->fetch();
+
+		$stmt->close();
+
+		//Not using default profile pic, we need to delete old one
+		if(strpos($profile_pic, "../img") != 0){
+			unlink($profile_pic);
+		}
 
 		//Get the type of file and set up the directory in which we want to store it
 		$target_dir = "../uploads/";
@@ -101,10 +118,10 @@
 		}
 	}
 
-	header("Location: http://localhost/?id=" . $_SESSION['user_ID']);
+	header("Location: http://localhost/home.php?id=" . $_SESSION['user_ID']);
 
 	function validateUsername($unameUnsanitized){
-		$unameSanitized = strip_tags($unameUnsanitized);
+		$unameSanitized = $unameUnsanitized;
 		if(strlen($unameSanitized) >= 1){
 			return $unameSanitized;
 		}

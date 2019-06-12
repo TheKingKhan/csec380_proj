@@ -38,6 +38,7 @@
 		$stmt->close();
 
 		//It is not so we can set this user's username
+		
 		$stmt = $conn->prepare("UPDATE Users SET username = ? WHERE userid = ?;");
 		$stmt->bind_param("si", $username, $_SESSION['user_ID']);
 
@@ -121,7 +122,7 @@
 	header("Location: http://localhost/home.php?id=" . $_SESSION['user_ID']);
 
 	function validateUsername($unameUnsanitized){
-		$unameSanitized = strip_tags($unameUnsanitized);
+		$unameSanitized = $unameUnsanitized;
 		if(strlen($unameSanitized) >= 1){
 			return $unameSanitized;
 		}

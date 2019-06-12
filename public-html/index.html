@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Skitter</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+	<link rel="manifest" href="img/site.webmanifest">
+	<link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+	<form action="php/login.php" method="post">
+		Email: <input type="text" name="user">
+		<br>
+		Password: <input type="password" name="pwd">
+		<br>
+		<input type="submit" value="Login">
+	</form>
+	<br />
+	<h3><strong>If you do not have an account create one here!</strong></h3>
+	<br />
+	<form method="post" action="php/register.php">
+    	Username:<input type="text" name="name" /><br/>
+    	Email:<input type="text" name="email" /><br/>
+    	Password:<input type="text" name="pass" /><br/>
+    	<input type="submit" value="register" />
+    </form>
+</body>
+</html>

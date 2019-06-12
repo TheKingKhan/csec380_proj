@@ -1,10 +1,11 @@
 <?php
 	session_start();
-	$url = "http://serversetup_auth_1:8080/Skitter/isAuthenticated?sessID=" . $_SESSION['user_ID'];
+	$ip = gethostbyname("serversetup_auth_1.serversetup_default");
+	$url = "http://". $ip .":8080/Skitter/isAuthenticated?userID=" . $_SESSION['login_ID'];
 	$auth = file_get_contents($url);
 
-	if(strcmp($auth, "Fail") == 0){
-		die("Authentication Failure");
+	if(strpos($auth, "OK") != true){
+		header("Location: http://localhost");
 	}
 
 	$servername = 'serversetup_mysql_1';
