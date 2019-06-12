@@ -1,5 +1,2 @@
 #Install python testing tool
-pytest
-locustio
-BeautifulSoup
-requests
+selenium
